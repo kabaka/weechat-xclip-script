@@ -36,17 +36,15 @@
 
 
 def weechat_init
-  Weechat.register "xclip", "Kabaka", "0.2",
-    "MIT", "Multi-line X Clipboard Paster", "", ""
+  Weechat.register "xclip", "Kabaka", "0.2", "MIT",
+    "Multi-line X Clipboard Paster", "", ""
 
-  Weechat.hook_command "xclip", "Paste from X clipboard.", "", "",
+  Weechat.hook_command "xclip", "Paste from the X clipboard.", "", "",
     "Should probably be bound to key (/key bind ctrl-V /xclip)",
-    "command_cb", ""
-
-  Weechat::WEECHAT_RC_OK
+    "xclip_cb", ""
 end
 
-def command_cb data, buffer, args
+def xclip_cb data, buffer, args
   `xclip -o`.each_line do |line|
     Weechat.command buffer, line.gsub("\t", '    ')
   end
